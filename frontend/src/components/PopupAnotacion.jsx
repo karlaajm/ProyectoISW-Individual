@@ -5,18 +5,18 @@ import CloseIcon from "@assets/XIcon.svg";
 export default function PopupAnotacion({
   show,
   setShow,
-  dataAnotacion = {}, // Propiedad para recibir datos, por defecto vacío
+  dataAnotacion = {},
   action,
-  mode = "create", // Modo del popup: "create" o "edit"
+  mode = "create",
 }) {
-  const isEditing = mode === "edit"; // Determina si es edición o creación
+  const isEditing = mode === "edit";
   const title = isEditing ? "Editar Anotación" : "Crear Anotación";
   const buttonText = isEditing ? "Guardar Cambios" : "Crear";
 
   const handleSubmit = (formData) => {
     action({
       ...formData,
-      FECHA: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
+      FECHA: new Date().toISOString().split("T")[0],
       CLASE_ASIGNATURA_ID:
         dataAnotacion?.CLASE_ASIGNATURA_ID?.CLASE_ASIGNATURA_ID || "",
       INSCRIPCION_ID: dataAnotacion?.INSCRIPCION_ID?.INSCRIPCION_ID || "",
@@ -39,7 +39,7 @@ export default function PopupAnotacion({
                   name: "NOMBRE_COMPLETO_ESTUDIANTE",
                   defaultValue: dataAnotacion?.NOMBRE_COMPLETO_ESTUDIANTE || "",
                   placeholder: "Nombre del estudiante",
-                  disabled: isEditing, // Deshabilitado si es edición
+                  disabled: isEditing,
                   fieldType: "input",
                   type: "text",
                   minLength: 10,
@@ -52,7 +52,7 @@ export default function PopupAnotacion({
                   name: "NOMBRE_ASIGNATURA",
                   defaultValue: dataAnotacion?.NOMBRE_ASIGNATURA || "",
                   placeholder: "Nombre de la asignatura",
-                  disabled: isEditing, // Deshabilitado si es edición
+                  disabled: isEditing,
                   fieldType: "input",
                   type: "text",
                   minLength: 10,

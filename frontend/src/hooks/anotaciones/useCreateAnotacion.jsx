@@ -44,7 +44,7 @@ const useCreateAnotacion = (fetchAnotaciones) => {
         INSCRIPCION_ID: "",
         CLASE_ASIGNATURA_ID: "",
       });
-      await fetchAnotaciones(); // Actualiza la lista de anotaciones
+      await fetchAnotaciones();
     } catch (error) {
       console.error("Error al crear la anotación:", error);
       showErrorAlert(

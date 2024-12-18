@@ -61,11 +61,11 @@ export async function obtenerAnotacionesService() {
       relations: {
         INSCRIPCION_ID: {
           estudiante: {
-            usuario: true, // Incluye los datos del usuario relacionados al estudiante
+            usuario: true, // Incluyo los datos del usuario relacionados al estudiante
           },
         },
         CLASE_ASIGNATURA_ID: {
-          asignatura: true, // Incluye los datos de la asignatura
+          asignatura: true, // Incluyo los datos de la asignatura
         },
       },
     });
@@ -76,7 +76,7 @@ export async function obtenerAnotacionesService() {
       const usuario = anotacion.INSCRIPCION_ID?.estudiante?.usuario;
       const asignatura = anotacion.CLASE_ASIGNATURA_ID?.asignatura;
 
-      // Concatenar nombre completo del estudiante
+      // Concateno el nombre completo del estudiante
       const nombreCompletoEstudiante = usuario
         ? `${usuario.NOMBRE} ${usuario.APELLIDO_PATERNO} ${usuario.APELLIDO_MATERNO}`
         : "Sin nombre";
@@ -84,7 +84,7 @@ export async function obtenerAnotacionesService() {
       const usuarioSinContrasenia = usuario
         ? {
             ...usuario,
-            CONTRASENIA: undefined, // Excluir este campo
+            CONTRASENIA: undefined,
           }
         : null;
 
@@ -99,20 +99,6 @@ export async function obtenerAnotacionesService() {
     return [anotacionesProcesadas, null];
   } catch (error) {
     console.error("Error al obtener las anotaciones:", error);
-    return [null, "Error interno del servidor"];
-  }
-}
-
-export async function crearAnotacionService(anotacion) {
-  try {
-    const RepositorioAnotaciones = AppDataSource.getRepository(Anotacion);
-
-    const nuevaAnotacion = RepositorioAnotaciones.create(anotacion);
-    const anotacionGuardada = await RepositorioAnotaciones.save(nuevaAnotacion);
-
-    return [anotacionGuardada, null];
-  } catch (error) {
-    console.error("Error al registrar un usuario", error);
     return [null, "Error interno del servidor"];
   }
 }

@@ -4,13 +4,13 @@ import Search from "../components/Search";
 import PopupAnotacion from "../components/PopupAnotacion";
 import DeleteIcon from "../assets/deleteIcon.svg";
 import UpdateIcon from "../assets/updateIcon.svg";
-// import AddIcon from "../assets/addIcon.svg";
+import AddIcon from "../assets/addIcon.svg";
 import UpdateIconDisable from "../assets/updateIconDisabled.svg";
 import DeleteIconDisable from "../assets/deleteIconDisabled.svg";
 import { useCallback, useState } from "react";
 import "@styles/users.css";
 import useEditAnotacion from "@hooks/anotaciones/useEditAnotacion";
-// import useAddAnotacion from "@hooks/anotaciones/useAddAnotacion";
+import useCreateAnotacion from "@hooks/anotaciones/useCreateAnotacion";
 import useDeleteAnotacion from "@hooks/anotaciones/useDeleteAnotacion";
 
 const Anotaciones = () => {
@@ -26,7 +26,7 @@ const Anotaciones = () => {
     setDataAnotacion,
   } = useEditAnotacion(fetchAnotaciones, setAnotaciones);
 
-  // const { handleClickAdd, handleAdd } = useAddAnotacion(setAnotaciones);
+  const { handleClickAdd, handleAdd } = useCreateAnotacion(setAnotaciones);
 
   const { handleDelete } = useDeleteAnotacion(
     fetchAnotaciones,
@@ -73,9 +73,9 @@ const Anotaciones = () => {
               onChange={handleRutFilterChange}
               placeholder={"Filtrar por estudiante"}
             />
-            {/* <button onClick={handleClickAdd}>
+            <button onClick={handleClickAdd}>
               <img src={AddIcon} alt="add" />
-            </button> */}
+            </button>
             <button
               onClick={handleClickUpdate}
               disabled={dataAnotacion?.length === 0}

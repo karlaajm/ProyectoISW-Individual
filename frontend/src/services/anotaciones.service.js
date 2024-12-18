@@ -20,6 +20,15 @@ export async function deleteAnotacion(id_anotacion) {
   }
 }
 
+export async function crearAnotacion(data) {
+  try {
+    const response = await axios.post(`/anotaciones/crear`, data);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+}
+
 export async function updateAnotacion(data, id_anotacion) {
   try {
     const response = await axios.patch(
