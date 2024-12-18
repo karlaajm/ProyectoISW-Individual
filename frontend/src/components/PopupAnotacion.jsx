@@ -2,16 +2,24 @@ import Form from "./Form";
 import "@styles/popup.css";
 import CloseIcon from "@assets/XIcon.svg";
 
-export default function PopupAnotacion({ show, setShow, data, action }) {
-  const dataAnotacion = data && data.length > 0 ? data[0] : {};
+export default function PopupAnotacion({
+  show,
+  setShow,
+  dataAnotacion = {}, // Propiedad para recibir datos, por defecto vacío
+  action,
+  mode = "create", // Modo del popup: "create" o "edit"
+}) {
+  const isEditing = mode === "edit"; // Determina si es edición o creación
+  const title = isEditing ? "Editar Anotación" : "Crear Anotación";
+  const buttonText = isEditing ? "Guardar Cambios" : "Crear";
 
   const handleSubmit = (formData) => {
     action({
       ...formData,
-      FECHA: new Date().toISOString().split("T")[0],
+      FECHA: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
       CLASE_ASIGNATURA_ID:
-        dataAnotacion.CLASE_ASIGNATURA_ID.CLASE_ASIGNATURA_ID,
-      INSCRIPCION_ID: dataAnotacion.INSCRIPCION_ID.INSCRIPCION_ID,
+        dataAnotacion?.CLASE_ASIGNATURA_ID?.CLASE_ASIGNATURA_ID || "",
+      INSCRIPCION_ID: dataAnotacion?.INSCRIPCION_ID?.INSCRIPCION_ID || "",
     });
   };
 
@@ -21,17 +29,17 @@ export default function PopupAnotacion({ show, setShow, data, action }) {
         <div className="bg">
           <div className="popup">
             <button className="close" onClick={() => setShow(false)}>
-              <img src={CloseIcon} />
+              <img src={CloseIcon} alt="Cerrar" />
             </button>
             <Form
-              title="Editar Anotación"
+              title={title}
               fields={[
                 {
                   label: "Estudiante",
                   name: "NOMBRE_COMPLETO_ESTUDIANTE",
-                  defaultValue: dataAnotacion.NOMBRE_COMPLETO_ESTUDIANTE || "",
-                  placeholder: "Nombre estudiante",
-                  disabled: true,
+                  defaultValue: dataAnotacion?.NOMBRE_COMPLETO_ESTUDIANTE || "",
+                  placeholder: "Nombre del estudiante",
+                  disabled: isEditing, // Deshabilitado si es edición
                   fieldType: "input",
                   type: "text",
                   minLength: 10,
@@ -42,9 +50,9 @@ export default function PopupAnotacion({ show, setShow, data, action }) {
                 {
                   label: "Asignatura",
                   name: "NOMBRE_ASIGNATURA",
-                  defaultValue: dataAnotacion.NOMBRE_ASIGNATURA || "",
-                  placeholder: "Asignatura",
-                  disabled: true,
+                  defaultValue: dataAnotacion?.NOMBRE_ASIGNATURA || "",
+                  placeholder: "Nombre de la asignatura",
+                  disabled: isEditing, // Deshabilitado si es edición
                   fieldType: "input",
                   type: "text",
                   minLength: 10,
@@ -62,12 +70,12 @@ export default function PopupAnotacion({ show, setShow, data, action }) {
                     { value: "OBSERVACION", label: "Observación" },
                   ],
                   required: true,
-                  defaultValue: dataAnotacion.TIPO || "",
+                  defaultValue: dataAnotacion?.TIPO || "POSITIVA",
                 },
                 {
                   label: "Descripción",
                   name: "DESCRIPCION",
-                  defaultValue: dataAnotacion.DESCRIPCION || "",
+                  defaultValue: dataAnotacion?.DESCRIPCION || "",
                   placeholder: "Describa la anotación...",
                   fieldType: "input",
                   required: true,
@@ -76,7 +84,7 @@ export default function PopupAnotacion({ show, setShow, data, action }) {
                 },
               ]}
               onSubmit={handleSubmit}
-              buttonText="Editar anotación"
+              buttonText={buttonText}
               backgroundColor={"#fff"}
             />
           </div>

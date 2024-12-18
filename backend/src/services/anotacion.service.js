@@ -3,6 +3,31 @@ import Anotacion from "../entity/anotacion.entity.js";
 import { AppDataSource } from "../config/configDb.js";
 import { comparePassword, encryptPassword } from "../helpers/bcrypt.helper.js";
 
+export async function crearAnotacionService(anotacion) {
+  try {
+    const RepositorioAnotaciones = AppDataSource.getRepository(Anotacion);
+
+    const anotacionExistente = await RepositorioAnotaciones.findOne({
+      where: { DESCRIPCION: anotacion.DESCRIPCION, FECHA: anotacion.FECHA },
+    });
+
+    if (anotacionExistente) {
+      return [null, "Ya existe una anotación con los mismos datos"];
+    }
+
+    const nuevaAnotacion = RepositorioAnotaciones.create(anotacion);
+    const anotacionGuardada = await RepositorioAnotaciones.save(nuevaAnotacion);
+
+    return [anotacionGuardada, null];
+  } catch (error) {
+    console.error("Error al registrar la anotación:", error);
+    if (error.code === "23505") {
+      return [null, "Anotación duplicada"];
+    }
+    return [null, "Error interno del servidor"];
+  }
+}
+
 export async function obtenerAnotacionService(query) {
   try {
     const { rut, id, email } = query;
